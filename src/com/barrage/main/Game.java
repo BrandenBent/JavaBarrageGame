@@ -16,20 +16,37 @@ public class Game extends Canvas implements Runnable {
 	private Random r;
 	private HUD hud;
 	private Spawn spawner;
+	private Menu menu;
+	
+	public enum STATE{
+		Menu,
+		Game,
+		GameOver
+	};
+	
+	public STATE gameState = STATE.Menu;
 
 	public Game() {
 		this.requestFocus(true);
 		handler = new Handler();
-		this.addKeyListener(new KeyInput(handler));
-		new Window(WIDTH, HEIGHT, "testing build", this);
 		hud = new HUD();
+		menu = new Menu(this, handler, hud);
+		
+		this.addMouseListener(menu);
+		this.addKeyListener(new KeyInput(handler));
+		
+		new Window(WIDTH, HEIGHT, "testing build", this);
 		spawner = new Spawn(handler, hud);
-
 		r = new Random();
-		handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
-		for (int i = 0; i < 1; i++) {
-//			handler.addObject(new BasicEnemy(WIDTH/2 -32, HEIGHT/2 -32, ID.BasicEnemy));
-			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy, handler));
+		
+		if (gameState == STATE.Game) {
+			handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
+			for (int i = 0; i < 1; i++) {
+				// subtracting 50 from width and height to make sure no enemies spawn outside of game
+				handler.addObject(new BasicEnemy(r.nextInt(WIDTH - 100), r.nextInt(HEIGHT -100), ID.BasicEnemy, handler));
+			} 
+		} else if (gameState == STATE.Menu) {
+			menu.tick();
 		}
 
 	}
@@ -80,8 +97,18 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 		handler.tick();
-		hud.tick();
-		spawner.tick();
+		if (gameState == STATE.Game) {
+			hud.tick();
+			spawner.tick();
+			
+			if (HUD.HEALTH <= 0) {
+				HUD.HEALTH = 100;
+//				}
+				handler.objects.clear();
+				gameState = STATE.GameOver;
+			}
+		}
+		
 	}
 
 	private void render() {
@@ -96,7 +123,11 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		handler.render(g);
-		hud.render(g);
+		if (gameState == STATE.Game) {
+			hud.render(g);
+		} else {
+			menu.render(g);
+		}
 		g.dispose();
 		bs.show();
 	}

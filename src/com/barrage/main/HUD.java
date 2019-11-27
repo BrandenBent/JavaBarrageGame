@@ -13,7 +13,6 @@ public class HUD {
 		HEALTH = Game.clamp(HEALTH, 0, 100);
 		greenHealth = Game.clamp(greenHealth, 0, 255);
 		greenHealth = HEALTH *2;
-		
 		score++;
 	}
 	

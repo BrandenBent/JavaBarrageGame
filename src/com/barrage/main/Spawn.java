@@ -17,12 +17,11 @@ public class Spawn {
 	public void tick() {
 		levelScore++;
 		
-		if (levelScore >= 1000) {
+		if (levelScore >= 100) {
 			levelScore = 0;
 			hud.setLevel(hud.getLevel() + 1);
-			if (hud.getLevel() > hud.getScore()/1000) {
-//				hud.setLevel(hud.getLevel() + 1);;
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
+			if (hud.getLevel() > hud.getScore()/100) {
+				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH -100), r.nextInt(Game.HEIGHT -100), ID.BasicEnemy, handler));
 			}
 		}
 	}
