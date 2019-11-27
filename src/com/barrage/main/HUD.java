@@ -1,4 +1,4 @@
-package com.tutorial.main;
+package com.barrage.main;
 
 import java.awt.Color;
 import java.awt.Graphics;

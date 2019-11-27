@@ -1,4 +1,4 @@
-package com.tutorial.main;
+package com.barrage.main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

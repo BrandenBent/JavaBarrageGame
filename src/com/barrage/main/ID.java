@@ -1,4 +1,4 @@
-package com.tutorial.main;
+package com.barrage.main;
 
 public enum ID {
 	Player(),
