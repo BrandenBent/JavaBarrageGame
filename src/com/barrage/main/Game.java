@@ -15,6 +15,7 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler;
 	private Random r;
 	private HUD hud;
+	private Spawn spawner;
 
 	public Game() {
 		this.requestFocus(true);
@@ -22,10 +23,11 @@ public class Game extends Canvas implements Runnable {
 		this.addKeyListener(new KeyInput(handler));
 		new Window(WIDTH, HEIGHT, "testing build", this);
 		hud = new HUD();
-		r = new Random();
+		spawner = new Spawn(handler, hud);
 
+		r = new Random();
 		handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 1; i++) {
 //			handler.addObject(new BasicEnemy(WIDTH/2 -32, HEIGHT/2 -32, ID.BasicEnemy));
 			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy, handler));
 		}
@@ -79,6 +81,7 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		handler.tick();
 		hud.tick();
+		spawner.tick();
 	}
 
 	private void render() {
